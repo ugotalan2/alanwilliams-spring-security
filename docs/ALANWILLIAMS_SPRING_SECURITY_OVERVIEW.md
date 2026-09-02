@@ -94,6 +94,17 @@ Secrets and environment-specific values remain outside Git.
 
 The library should not bake application hostnames or Agenda-specific assumptions into its implementation.
 
+## Related Shared Component
+
+`alanwilliams-ui` is the frontend counterpart to this library. It centralizes
+shared React/design-system presentation and is published as `@alanwilliams/ui`
+through GitHub npm Packages.
+
+Both repositories follow the same boundary principle: shared libraries own
+reusable cross-app plumbing or presentation, while consumer applications retain
+domain behavior and authorization. Neither is deployed as a central runtime
+service.
+
 ## Near-Term Work
 
 1. Create repository and build skeleton.
