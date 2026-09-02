@@ -170,6 +170,20 @@ The publishing mechanism is not yet locked. Options such as GitHub Packages or a
 - Validate JWTs according to Clerk/Spring Security requirements rather than trusting frontend claims.
 - Backend authorization remains mandatory after authentication succeeds.
 
+## Relationship to Other Shared Libraries
+
+AlanWilliams uses the same architectural pattern for reusable frontend code:
+
+```text
+alanwilliams-spring-security -> shared Java authentication library
+alanwilliams-ui              -> shared React/design-system library
+```
+
+Both are versioned build-time dependencies rather than deployed services.
+Neither library owns application-domain authorization or canonical Platform
+Person data. Spring Security is distributed with Maven/GitHub Packages;
+`alanwilliams-ui` is distributed with npm/GitHub Packages.
+
 ## Current Locked Decisions
 
 - This is a reusable library, not a microservice.
