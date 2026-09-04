@@ -11,6 +11,14 @@ public class ClerkJwtAuthenticationConverter
     public AbstractAuthenticationToken convert(Jwt jwt) {
         String clerkUserId = jwt.getSubject();
 
+        Number platformPersonIdClaim =
+                jwt.getClaim("platform_person_id");
+
+        Long platformPersonId =
+                platformPersonIdClaim == null
+                        ? null
+                        : platformPersonIdClaim.longValue();
+
         if (clerkUserId == null || clerkUserId.isBlank()) {
             throw new IllegalArgumentException(
                     "Clerk JWT is missing the subject claim"
@@ -18,7 +26,10 @@ public class ClerkJwtAuthenticationConverter
         }
 
         return new ClerkAuthenticationToken(
-                new ClerkPrincipal(clerkUserId),
+                new ClerkPrincipal(
+                        clerkUserId,
+                        platformPersonId
+                ),
                 jwt
         );
     }
