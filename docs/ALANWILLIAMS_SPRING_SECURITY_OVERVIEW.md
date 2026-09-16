@@ -124,3 +124,19 @@ service.
 - application roles/permissions
 - generic framework abstractions not required by real consumers
 
+## September 2026 Implemented Status
+
+The shared security library is now a real GitHub Packages Maven dependency used
+by Platform/Agenda rather than a future repository direction. Agenda currently
+consumes the `0.2.0-SNAPSHOT` line.
+
+The principal contract includes both the authenticated Clerk user ID and the
+optional Platform Person ID projected from the Clerk JWT. A valid Clerk user may
+legitimately authenticate with `platform_person_id = null`; downstream apps use
+that state to initiate Platform Person onboarding rather than treating it as an
+invalid JWT.
+
+The library remains authentication plumbing only. Platform owns Person
+creation/linking and Clerk metadata writes; Agenda owns organization/domain
+authorization.
+

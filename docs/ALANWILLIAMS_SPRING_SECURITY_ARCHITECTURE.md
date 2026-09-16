@@ -193,3 +193,41 @@ Person data. Spring Security is distributed with Maven/GitHub Packages;
 - App authorization is outside this library.
 - The library must remain free of Agenda/Budget domain assumptions.
 
+## Platform Person Claim Projection
+
+The shared principal may expose an optional Platform Person ID from the Clerk
+JWT in addition to the durable Clerk user ID:
+
+``` text
+principal.clerkUserId()
+principal.platformPersonId() -> nullable/optional until Platform onboarding
+```
+
+This is a claim projection, not Person resolution. The library does not query
+the Platform database and does not create/link Persons. A cryptographically
+valid Clerk JWT without `platform_person_id` is still an authenticated Clerk
+identity; consumer applications decide whether that state requires onboarding
+or denies a domain operation.
+
+Canonical chain:
+
+``` text
+Platform Person
+-> Clerk public_metadata.platform_person_id
+-> Clerk JWT platform_person_id
+-> ClerkPrincipal.platformPersonId()
+```
+
+Only Platform owns the Clerk secret and metadata mutation. Consumer Java apps
+validate JWTs locally with environment-specific issuer/authorized-party rules.
+Test and production Clerk instances must remain isolated along with their
+corresponding Platform Person databases.
+
+## Current Distribution
+
+The library is distributed through GitHub Maven Packages and consumed as a
+versioned build-time dependency. Current Agenda integration uses
+`0.2.0-SNAPSHOT`. Private-package Docker builds authenticate with a BuildKit
+secret sourced from the GitHub Actions token; credentials are not part of the
+runtime image.
+
