@@ -231,3 +231,22 @@ versioned build-time dependency. Current Agenda integration uses
 secret sourced from the GitHub Actions token; credentials are not part of the
 runtime image.
 
+## September 30 2026 Standalone Browser-Session Boundary
+
+JWT validation and browser-session sharing are separate concerns. This library
+continues to validate the token presented to each backend and does not assume
+that Clerk frontend sessions on `alanwilliams.app`, `agenda.alanwilliams.app`, or
+future app domains are synchronized.
+
+AlanWilliams Apps intentionally use standalone Clerk browser sessions. Cross-app
+navigation is ordinary URL navigation, and no custom `/handoff`, sign-in-ticket,
+or bearer-token transfer primitive belongs in this library. Existing Clerk
+session JWTs/bearer tokens must never be exposed in URLs.
+
+The library owns only reusable JWT validation and principal extraction, including
+the optional `platform_person_id` claim. Platform owns Person creation/linkage and
+Clerk metadata synchronization; consumer apps own onboarding redirects,
+`returnTo` validation, invitations, memberships, and authorization. If seamless
+cross-domain browser authentication is desired later, evaluate Clerk's supported
+satellite/multi-domain capabilities rather than implementing session transfer in
+this library.

@@ -140,3 +140,15 @@ The library remains authentication plumbing only. Platform owns Person
 creation/linking and Clerk metadata writes; Agenda owns organization/domain
 authorization.
 
+## September 30 2026 Standalone App Authentication Boundary
+
+The shared security library continues to validate each application's Clerk JWT
+locally and expose Clerk user ID plus optional `platform_person_id`. Separate app
+domains intentionally use independent Clerk browser sessions.
+
+No custom cross-app identity handoff helper is planned. The library does not issue
+sign-in tickets, synchronize browser sessions, own `returnTo` policy, or mutate
+application navigation. Platform owns Person creation/linking and Clerk metadata
+synchronization; Agenda and other apps own their invitation, membership, and
+authorization workflows. Existing Clerk bearer/session JWTs must never be placed
+in URLs.
